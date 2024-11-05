@@ -7,12 +7,16 @@ const Tasks = ({ postsQuery, updateMutation, deleteMutation }) => {
     title: "",
   });
 
-  const handleChange = (e, id) => {
-    const { value } = e.target;
-    setTask({
-      id,
-      title: value,
-    });
+  const handleChange = (e) => {
+    // const { value } = e.target;
+    // setTask({
+    //   id,
+    //   title: value,
+    // });
+    setTask((prevTask) => ({
+      ...prevTask,
+      title: e.target.value,
+    }));
   };
 
   const handleEditClick = (id, title) => {
@@ -32,8 +36,7 @@ const Tasks = ({ postsQuery, updateMutation, deleteMutation }) => {
   return (
     <section className="flex flex-col gap-4 items-center">
       <h2>Tasks List</h2>
-      {task.title}
-      {postsQuery.data.map((post) => (
+      {(postsQuery.data ?? []).map((post) => (
         <div className="flex items-center gap-4" key={post.id}>
           <input
             className="p-2 border border-gray-300 rounded-md focus:outline-none "

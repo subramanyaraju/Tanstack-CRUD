@@ -1,53 +1,38 @@
 import React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { addTodo, getTodo, updateTodo, deleteTodo } from "../src/api/todoApi.js";
 import Tasks from "../src/components/Tasks";
 import Create from "../src/components/Create";
 
-let POSTS = [
-  { id: 1, title: "Post 1" },
-  { id: 2, title: "Post 2" },
-];
-const wait = (duration) =>
-  new Promise((resolve) => setTimeout(resolve, duration));
 
 const HomePage = () => {
   const queryClient = useQueryClient();
 
   const postsQuery = useQuery({
-    queryKey: ["posts"],
-    queryFn: () => wait(1000).then(() => [...POSTS]),
+    queryKey: ["todos"],
+    queryFn: getTodo,
   });
 
   const postsMutation = useMutation({
-    mutationFn: (newPost) => {
-      POSTS = [...POSTS, newPost];
-      console.log("POSTS", POSTS);
-      return wait(1000).then(() => console.log("POSTS", POSTS));
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    mutationFn: addTodo,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
   });
 
   const updateMutation = useMutation({
-    mutationFn: (updatedPost) => {
-      POSTS = POSTS.map((post) =>
-        post.id === updatedPost.id ? updatedPost : post
-      );
-      return wait(1000).then(() => [...POSTS]);
-    },
-    onSuccess: (data) => {
-      queryClient.setQueryData(["posts"], data);
+    mutationFn: (updatedTask) => updateTodo(updatedTask.id, updatedTask),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => {
-      POSTS = POSTS.filter((post) => post.id !== id);
-      return wait(1000).then(() => [...POSTS]);
-    },
-    onSuccess: (data) => {
-      queryClient.setQueryData(["posts"], data);
+    mutationFn: deleteTodo,
+    onSuccess: (deletedId) => {
+      queryClient.setQueryData(["todos"], (oldData) =>
+        oldData ? oldData.filter((post) => post.id !== deletedId) : []
+      );
     },
   });
 

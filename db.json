@@ -1,0 +1,20 @@
+{
+  "todos": [
+    {
+      "id": "49ef78ac-9146-454d-b996-76dc37474930",
+      "title": "Coffee"
+    },
+    {
+      "id": "2d12bf97-f224-4077-ab84-57d07f38a66e",
+      "title": "Gym"
+    },
+    {
+      "id": "65bc42c6-dd83-4a96-8c5d-46713cae8508",
+      "title": "Breakfast"
+    },
+    {
+      "id": "bedde261-4cdc-4e93-ae36-99607d915822",
+      "title": "Office"
+    }
+  ]
+}

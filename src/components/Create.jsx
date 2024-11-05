@@ -9,9 +9,10 @@ const Create = ({ postsMutation }) => {
   });
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setTask({
       ...task,
-      title: e.target.value,
+      [name]: value
     });
   };
 
@@ -22,13 +23,15 @@ const Create = ({ postsMutation }) => {
     });
     setTask({ id: uuidv4(), title: "" });
   };
+
+
   return (
     <section className="container mx-auto my-12 flex flex-col justify-center items-center gap-4">
       <h1>Tanstack Query</h1>
-
       <input
         className="p-2 border border-gray-300 rounded-md focus:outline-none"
         type="text"
+        name="title"
         placeholder="Add Task"
         value={task.title}
         onChange={handleChange}
